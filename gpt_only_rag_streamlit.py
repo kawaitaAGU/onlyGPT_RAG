@@ -1,4 +1,9 @@
+
 import streamlit as st
+
+# ✅ 最初にページ設定（重要！）
+st.set_page_config(page_title="国家試験 類似問題GPT検索", layout="wide")
+
 import pandas as pd
 from openai import OpenAI
 from PIL import Image
@@ -16,7 +21,7 @@ csv_path = Path("sample.csv")
 df = pd.read_csv(csv_path)
 df.columns = df.columns.str.strip().str.strip('"\'')
 
-# 必要な列をチェック
+# 列名チェック
 required_cols = ["設問", "選択肢a", "選択肢b", "選択肢c", "選択肢d", "選択肢e", "正解"]
 missing_cols = [col for col in required_cols if col not in df.columns]
 st.write("現在の列名:", df.columns.tolist())  # Debug
@@ -24,7 +29,6 @@ if missing_cols:
     st.error(f"次の列がCSVに見つかりませんでした: {missing_cols}")
     st.stop()
 
-st.set_page_config(page_title="国家試験 類似問題GPT検索", layout="wide")
 st.title("国家試験 類似検索＋新作類題生成（GPT検索のみ）")
 
 uploaded_file = st.file_uploader("国家試験の問題画像をアップロード", type=["jpg", "jpeg", "png"])
