@@ -15,7 +15,9 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 csv_path = Path("sample.csv")
 df = pd.read_csv(csv_path)
-df.columns = df.columns.str.strip('"'')
+df.columns = df.columns.str.strip().str.strip('"'')
+
+st.write("現在の列名:", df.columns.tolist())  # デバッグ用表示
 
 st.set_page_config(page_title="国家試験 類似問題GPT検索", layout="wide")
 st.title("国家試験 類似検索＋新作類題生成（GPT検索のみ）")
