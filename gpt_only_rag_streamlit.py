@@ -56,17 +56,19 @@ if uploaded_file:
         st.success(f"出題領域の推定: {predicted_domain}")
 
     with st.spinner("GPTがcsv内から類似問題10題を抽出中..."):
-        filtered_df = df[df['領域'].str.contains(predicted_domain, na=False)].head(20)
+        sample_df = df.head(50)
         sample_text = "\n\n".join([
             f"{i+1}. {row['設問']}\na. {row['選択肢a']}\nb. {row['選択肢b']}\nc. {row['選択肢c']}\nd. {row['選択肢d']}\ne. {row['選択肢e']}"
-            for i, row in filtered_df.iterrows()
+            for i, row in sample_df.iterrows()
         ])
 
         similarity_response = client.chat.completions.create(
             model="gpt-4o-2024-11-20",
             messages=[
-                {"role": "system", "content": f"以下の国家試験問題リストの中から、次の問題に意味的に最も近い10問を選んでください。\n\n{sample_text}"},
-                {"role": "user", "content": extracted_question}
+                {"role": "system", "content": f"以下の国家試験問題リストは複数の領域にまたがっています。"
+                                              f"あなたはこの中から、問題「{extracted_question}」が属すると推定された領域「{predicted_domain}」に関して、"
+                                              "意味的に最も関連性の高い10問を選んでください。"},
+                {"role": "user", "content": sample_text}
             ],
             max_tokens=2000
         )
@@ -85,4 +87,3 @@ if uploaded_file:
         )
         st.markdown("### GPTによる解説と類題")
         st.markdown(final_response.choices[0].message.content.strip())
-
