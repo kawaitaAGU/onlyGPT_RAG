@@ -1,6 +1,6 @@
 
 import streamlit as st
-st.set_page_config(page_title="国家試験 類似問題GPT検索", layout="wide")
+st.set_page_config(page_title="国家試験 GPT検索", layout="wide")
 
 import pandas as pd
 from openai import OpenAI
