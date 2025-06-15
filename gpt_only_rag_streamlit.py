@@ -42,7 +42,7 @@ if uploaded_file:
         vision_response = client.chat.completions.create(
             model="gpt-4o-2024-11-20",
             messages=[
-                {"role": "system", "content": "あなたは国家試験OCRエンジンです。画像から問題文・選択肢を正確に抽出してください。"},
+                {"role": "system", "content": "あなたは国家試験OCRエンジンです。画像から問題文・選択肢・解答を正確に抽出してください。"},
                 {"role": "user", "content": [{"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image}"}}]}
             ],
             max_tokens=1000
@@ -87,7 +87,7 @@ if uploaded_file:
         final_response = client.chat.completions.create(
             model="gpt-4o-2024-11-20",
             messages=[
-                {"role": "system", "content": "あなたは歯科国家試験の教育AIです。抽出された問題と類似10問から、正解・解説・理由を記述し、さらに新作類題を3問生成してください。"},
+                {"role": "system", "content": "あなたは歯科国家試験の教育AIです。抽出された問題と類似10問から、正解・解説・理由を記述し、さらに新作類題を3問生成してください。その類題には解答と説明文を付け加えてください。"},
                 {"role": "user", "content": f"【未知の問題】\n{extracted_question}\n\n【類似問題】\n{similar_questions}"}
             ],
             max_tokens=2000
